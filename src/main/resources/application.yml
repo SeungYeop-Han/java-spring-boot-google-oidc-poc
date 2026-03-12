@@ -36,7 +36,10 @@ spring:
             scope:
               - openid
               - email
-
+        # google OpenID discovery document
+        provider:
+          google-oidc:
+            issuer-uri: https://accounts.google.com
 auth:
   google-oidc:
     client-id: ${GOOGLE_OAUTH_CLIENT_ID}
