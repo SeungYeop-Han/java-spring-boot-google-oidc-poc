@@ -38,3 +38,6 @@ out/
 
 ### Custom ###
 .env
+
+### cert ###
+*.p12
