@@ -6,6 +6,13 @@ server:
     key-store-type: ${SSL_KEY_STORE_TYPE}
     key-alias: ${SSL_KEY_ALIAS}
     key-password: ${SSL_PASSWORD}
+  # session cookie
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+        same-site: lax
 
 spring:
   application:
