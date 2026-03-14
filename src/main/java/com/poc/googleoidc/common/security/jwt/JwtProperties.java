@@ -1,4 +1,4 @@
-package com.poc.googleoidc.common.conf.security;
+package com.poc.googleoidc.common.security.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

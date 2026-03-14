@@ -1,4 +1,4 @@
-package com.poc.googleoidc.common.conf.security;
+package com.poc.googleoidc.common.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.poc.googleoidc.common.conf.security;
+package com.poc.googleoidc.common.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

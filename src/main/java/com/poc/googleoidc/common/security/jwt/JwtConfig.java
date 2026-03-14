@@ -1,7 +1,6 @@
-package com.poc.googleoidc.common.conf.security;
+package com.poc.googleoidc.common.security.jwt;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
