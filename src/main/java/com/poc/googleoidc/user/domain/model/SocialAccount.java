@@ -1,6 +1,6 @@
 package com.poc.googleoidc.user.domain.model;
 
-import com.poc.googleoidc.user.domain.model.consts.UserAccountConstant;
+import com.poc.googleoidc.user.domain.model.consts.UserAccountConstants;
 import com.poc.googleoidc.user.domain.model.enums.AuthProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,7 +50,7 @@ public class SocialAccount {
     private String sub;
 
     // email 은 핵심 식별자가 아니며, SocialAccount 내에서 유일하지 않을 수도 있음
-    @Column(length = UserAccountConstant.MAX_EMAIL_LENGTH)
+    @Column(length = UserAccountConstants.MAX_EMAIL_LENGTH)
     private String email;
 
     private boolean isEmailVerified;

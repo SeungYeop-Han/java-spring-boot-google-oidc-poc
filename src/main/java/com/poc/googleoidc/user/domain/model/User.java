@@ -1,6 +1,6 @@
 package com.poc.googleoidc.user.domain.model;
 
-import com.poc.googleoidc.user.domain.model.consts.UserAccountConstant;
+import com.poc.googleoidc.user.domain.model.consts.UserAccountConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,10 +34,10 @@ public class User {
     // 한 명의 User 가 여러 SocialAccount 를 가질 수 있음
     // 따라서 User 의 email 필드는 "대표 이메일" 이라고 보면 됨
     // 유일키 제약사항은 User 엔티티 클래스의 @Table 어노테이션 내부에 직접 정의함
-    @Column(length = UserAccountConstant.MAX_EMAIL_LENGTH)
+    @Column(length = UserAccountConstants.MAX_EMAIL_LENGTH)
     private String email;
 
-    @Column(length = UserAccountConstant.MAX_NICKNAME_LENGTH)
+    @Column(length = UserAccountConstants.MAX_NICKNAME_LENGTH)
     private String nickname;
 
     private Instant createdAt;
