@@ -38,3 +38,4 @@ spring:
             scope:
               - openid
               - email
+              - profile

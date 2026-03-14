@@ -46,6 +46,7 @@ public class SecurityConfig {
             System.out.println("oidcUser.getSubject() = " + oidcUser.getSubject());
             System.out.println("oidcUser.getNonce() = " + oidcUser.getNonce());
             System.out.println("oidcUser.getEmail() = " + oidcUser.getEmail());
+            System.out.println("oidcUser.getProfile() = " + oidcUser.getProfile());
 
             return oidcUser;
         };
