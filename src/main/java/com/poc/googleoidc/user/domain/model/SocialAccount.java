@@ -148,4 +148,15 @@ public class SocialAccount {
 
     // ----- domain logics
 
+    public void updateEmailInfo(
+            String email,
+            boolean isEmailVerified
+    ) {
+
+        validateEmail(email);
+        validateIsEmailVerified(isEmailVerified);
+
+        this.email = email;
+        this.isEmailVerified = isEmailVerified;
+    }
 }

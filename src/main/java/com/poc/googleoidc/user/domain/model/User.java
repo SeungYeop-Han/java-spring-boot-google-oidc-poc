@@ -113,4 +113,13 @@ public class User {
 
     // ----- domain logics
 
+    public void updateEmail(String email) {
+        validateEmail(email);
+        this.email = email;
+    }
+
+    public void updateNickname(String nickname) {
+        validateNickname(nickname);
+        this.nickname = nickname;
+    }
 }
