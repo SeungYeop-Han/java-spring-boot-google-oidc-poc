@@ -39,3 +39,8 @@ spring:
               - openid
               - email
               - profile
+
+app:
+  auth:
+    jwt:
+      secret: ${APP_JWT_SECRET:"우리가_발급할_JWT_액세스_토큰의_시크릿_키입니다._최소_32_바이트_길이로_작성되어야_합니다."}
