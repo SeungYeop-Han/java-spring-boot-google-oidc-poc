@@ -15,12 +15,17 @@ public class UserAndAccountRegistrationStrategyFactory {
     private final UserRepository userRepository;
     private final SocialAccountRepository socialAccountRepository;
 
-    private final Map<AuthProvider, UserAndAccountRegistrationStrategy> strategyMap = Map.of(
-            AuthProvider.GOOGLE, new GoogleUserAndAccountRegistrationStrategy(userRepository, socialAccountRepository)
-            // 추후 확장 가능
-    );
+    private Map<AuthProvider, UserAndAccountRegistrationStrategy> strategyMap;
 
     public UserAndAccountRegistrationStrategy get(AuthProvider provider) {
+
+        if (strategyMap == null) {
+            strategyMap = Map.of(
+                    AuthProvider.GOOGLE, new GoogleUserAndAccountRegistrationStrategy(userRepository, socialAccountRepository)
+                    // 추후 확장 가능
+            );
+        }
+
         return strategyMap.get(provider);
     }
 }
