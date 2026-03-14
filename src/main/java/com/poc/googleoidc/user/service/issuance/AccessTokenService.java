@@ -1,7 +1,8 @@
-package com.poc.googleoidc.user.service;
+package com.poc.googleoidc.user.service.issuance;
 
 import com.poc.googleoidc.common.security.jwt.JwtProperties;
 import com.poc.googleoidc.user.domain.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -13,15 +14,11 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AccessTokenService {
 
     private final JwtEncoder jwtEncoder;
     private final JwtProperties jwtProperties;
-
-    public AccessTokenService(JwtEncoder jwtEncoder, JwtProperties jwtProperties) {
-        this.jwtEncoder = jwtEncoder;
-        this.jwtProperties = jwtProperties;
-    }
 
     public String create(User user) {
 
@@ -30,7 +27,7 @@ public class AccessTokenService {
         // 클레임 정의
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(jwtProperties.issuer())
-                .subject(user.id().toString())
+                .subject(String.valueOf(user.id()))
                 .audience(List.of(jwtProperties.audience()))
                 .issuedAt(now)
                 .expiresAt(now.plus(jwtProperties.accessTokenTtl()))
