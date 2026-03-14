@@ -1,4 +1,4 @@
-package com.poc.googleoidc.user.service.social_login;
+package com.poc.googleoidc.user.service.registration;
 
 import com.poc.googleoidc.user.domain.model.SocialAccount;
 import com.poc.googleoidc.user.domain.model.User;

@@ -3,7 +3,7 @@ package com.poc.googleoidc.common.security;
 import com.poc.googleoidc.user.domain.model.SocialAccount;
 import com.poc.googleoidc.user.domain.model.User;
 import com.poc.googleoidc.user.domain.model.enums.AuthProvider;
-import com.poc.googleoidc.user.service.social_login.SocialLoginService;
+import com.poc.googleoidc.user.service.registration.SocialLoginService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
