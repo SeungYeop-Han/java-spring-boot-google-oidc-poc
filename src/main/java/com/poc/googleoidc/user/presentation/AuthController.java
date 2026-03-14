@@ -16,10 +16,17 @@ public class AuthController {
 
     /**
      * 구글 OIDC 최초 진입 경로에 대한 핸들러
-     *
      */
     @GetMapping("/oauth2/authorization/google")
     public String auth() {
         return "→ /oauth2/authorization/google";
+    }
+
+    /**
+     * 구글 OIDC 로그인 성공 시 리다이렉트될 경로의 핸들러
+     */
+    @GetMapping("/login/success")
+    public String loginSuccess() {
+        return "→ LOGIN SUCCESS!";
     }
 }
