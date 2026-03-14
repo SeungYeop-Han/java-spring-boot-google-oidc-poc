@@ -40,31 +40,30 @@ public class GoogleUserAndAccountRegistrationStrategy implements UserAndAccountR
         }
         
         // 2. User 만 있는 경우
-        if (socialAccountOptional.isEmpty() && userOptional.isPresent()) {
+        else if (socialAccountOptional.isEmpty() && userOptional.isPresent()) {
             // SocialAccount 생성 및 기존 회원에 연결 후 반환
             SocialAccount newGoogleAccount
                     = SocialAccount.createNewGoogleAccount(userOptional.get(), sub, email, isEmailVerified);
+            socialAccountRepository.save(newGoogleAccount);
             return Pair.of(userOptional.get(), newGoogleAccount);
         }
         
         // 3. SocialAccount 만 있는 경우(비정상)
-        if (socialAccountOptional.isPresent() && userOptional.isEmpty()) {
+        else if (socialAccountOptional.isPresent() && userOptional.isEmpty()) {
             // To Do: throw new AuthException(...);
             throw new RuntimeException();
         }
         
         // 4. 둘 모두 없는 경우
-        if (socialAccountOptional.isEmpty() && userOptional.isEmpty()) {
+        else {
             // SocialAccount 와 User 를 생성 후 반환
             User newUser = User.createNew(email, nickname);
+            userRepository.save(newUser);
             SocialAccount newGoogleAccount
                     = SocialAccount.createNewGoogleAccount(newUser, sub, email, isEmailVerified);
+            socialAccountRepository.save(newGoogleAccount);
             return Pair.of(newUser, newGoogleAccount);
         }
-
-        // 위의 4 가지 경우 중 어느 것에도 해당하지 않는 경우 예외 발생
-        // To Do: throw new AuthException(...);
-        throw new RuntimeException();
     }
 
     // ----- helpers
