@@ -19,8 +19,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.time.Instant;
-
 @Entity
 @Table(
         uniqueConstraints = @UniqueConstraint(
