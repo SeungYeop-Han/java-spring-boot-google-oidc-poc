@@ -49,13 +49,6 @@ public class RefreshToken {
     @Column(nullable = false)
     private Instant expiresAt;
 
-    // 폐기일시
-    private Instant revokedAt;
-
-    // 갱신일시
-    @Column(nullable = false)
-    private Instant updatedAt;
-
     // ----- constructors
 
     @Builder
@@ -64,23 +57,19 @@ public class RefreshToken {
             User user,
             String tokenHash,
             Instant issuedAt,
-            Instant expiresAt,
-            Instant revokedAt,
-            Instant updatedAt
+            Instant expiresAt
     ) {
 
         validateId(id);
         validateUser(user);
         validateTokenHash(tokenHash);
-        validateTimes(issuedAt, expiresAt, revokedAt, updatedAt);
+        validateTimes(issuedAt, expiresAt);
 
         this.id = id;
         this.user = user;
         this.tokenHash = tokenHash;
         this.issuedAt = issuedAt;
         this.expiresAt = expiresAt;
-        this.revokedAt = revokedAt;
-        this.updatedAt = updatedAt;
     }
 
     // ----- static factories
@@ -106,9 +95,7 @@ public class RefreshToken {
             User user,
             String tokenHash,
             Instant issuedAt,
-            Instant expiresAt,
-            Instant revokedAt,
-            Instant updatedAt
+            Instant expiresAt
     ) {
 
         return RefreshToken.builder()
@@ -116,8 +103,6 @@ public class RefreshToken {
                 .tokenHash(tokenHash)
                 .issuedAt(issuedAt)
                 .expiresAt(expiresAt)
-                .revokedAt(revokedAt)
-                .updatedAt(updatedAt)
                 .build();
     }
 
@@ -136,12 +121,7 @@ public class RefreshToken {
         // To Do: 유효하지 않으면 예외 발생
     }
 
-    private static void validateTimes(Instant issuedAt, Instant expiresAt, Instant revokedAt, Instant updatedAt) {
+    private static void validateTimes(Instant issuedAt, Instant expiresAt) {
         // To Do: 유효하지 않으면 예외 발생
     }
-
-    // ----- domain logics
-
-    // To Do: revoke
-    // To Do: update
 }

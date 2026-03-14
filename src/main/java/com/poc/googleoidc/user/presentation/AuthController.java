@@ -15,6 +15,14 @@ public class AuthController {
     }
 
     /**
+     * 리프레시 토큰이 전달되는 경로
+     */
+    @GetMapping("/api/auth")
+    public String ref() {
+        return "→ /api/auth";
+    }
+
+    /**
      * 구글 OIDC 로그인 성공 시 리다이렉트될 경로의 핸들러
      */
     @GetMapping("/login/success")

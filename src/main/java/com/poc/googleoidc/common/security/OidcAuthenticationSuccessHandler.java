@@ -6,6 +6,7 @@ import com.poc.googleoidc.user.domain.model.User;
 import com.poc.googleoidc.user.domain.model.enums.AuthProvider;
 import com.poc.googleoidc.user.service.issuance.AccessTokenService;
 import com.poc.googleoidc.user.service.issuance.AuthCookieService;
+import com.poc.googleoidc.user.service.issuance.RefreshTokenService;
 import com.poc.googleoidc.user.service.registration.SocialLoginService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -29,6 +31,7 @@ public class OidcAuthenticationSuccessHandler implements AuthenticationSuccessHa
     private final AccessTokenService accessTokenService;
     private final AuthCookieService authCookieService;
     private final JwtProperties jwtProperties;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     public void onAuthenticationSuccess(
@@ -49,25 +52,54 @@ public class OidcAuthenticationSuccessHandler implements AuthenticationSuccessHa
         // 1. User & SocialAccount 등록 및 연동
         AuthProvider provider = resolveAuthProvider(authentication);
         Pair<User, SocialAccount> userAndSocialAccount = socialLoginService.loginOrRegister(provider, oidcUser);
+        User user = userAndSocialAccount.getFirst();
+        SocialAccount socialAccount = userAndSocialAccount.getSecond();
 
-        // 2. access JWT 생성
-        String accessToken = accessTokenService.create(userAndSocialAccount.getFirst());
+        // 2. 액세스 토큰(JWT) 생성
+        String accessToken = accessTokenService.create(user);
 
-        // 3) refresh token 원문 생성 + hash 저장
-        // 4) access_token 쿠키 set
+        // 3. 리프레시 토큰 원문 생성 및 DB 에 해시값 저장
+        RefreshTokenService.IssuedRefreshToken refreshToken = refreshTokenService.create(user);
+
+        // 4. 액세스 토큰 및 리프레시 토큰을 쿠키에 설정
+        boolean isSslEnabled = false;
         HttpHeaders headers = new HttpHeaders();
-        authCookieService.addAccessTokenCookie(headers, accessToken, jwtProperties.accessTokenTtl());
+
+        // headers 에 액세스 토큰을 담은 Set-Cookie 헤더(들) 추가
+        authCookieService.addAccessTokenCookie(
+                headers,
+                accessToken,
+                jwtProperties.accessTokenTtl(),
+                isSslEnabled
+        );
+
+        // headers 에 리프레시 토큰을 담은 Set-Cookie 헤더(들) 추가
+        authCookieService.addRefreshTokenCookie(
+                headers,
+                refreshToken.rawToken(),
+                jwtProperties.refreshTokenTtl(),
+                isSslEnabled
+        );
+
+        // Set-Cookie 헤더들을 응답 객체에 설정
         headers.forEach((name, values) ->
                 values.forEach(value -> response.addHeader(name, value))
         );
 
-        // 5) refresh_token 쿠키 set
-        // 6) 필요하면 OIDC용 세션 invalidate
+        // 6. OIDC용 세션 invalidate 및 JSESSIONID 쿠키 제거
         if (request.getSession(false) != null) {
             request.getSession(false).invalidate();
         }
+        ResponseCookie deleteSessionCookie = ResponseCookie.from("JSESSIONID", "")
+                .path("/")
+                .maxAge(0)
+                .httpOnly(true)
+                .secure(request.isSecure())
+                .sameSite("Lax")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, deleteSessionCookie.toString());
 
-        // 7) 프론트 페이지로 redirect
+        // 7. 프론트 페이지로 redirect
         response.sendRedirect("https://localhost:8443/login/success");
     }
 

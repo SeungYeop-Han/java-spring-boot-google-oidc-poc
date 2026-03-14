@@ -49,3 +49,4 @@ app:
       issuer: ${APP_JWT_ISSUER}
       audience: ${APP_JWT_AUDIENCE}
       access-token-ttl: 15m
+      refresh-token-ttl: 180d
